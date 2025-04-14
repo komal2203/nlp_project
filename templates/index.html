@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hate Speech Detection Interface</title>
+    <!-- Bootstrap CSS via CDN -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            padding-top: 50px;
+        }
+        .result-box {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 class="text-center">Hate Speech Detection Interface</h1>
+    <form id="predictionForm">
+        <div class="form-group">
+            <label for="textInput">Enter Text:</label>
+            <textarea class="form-control" id="textInput" name="text" rows="4" placeholder="Type your text here..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Detect</button>
+    </form>
+
+    <div id="result" class="result-box"></div>
+</div>
+
+<!-- jQuery and Bootstrap JS via CDN -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    // Use jQuery to intercept form submission and send an AJAX request.
+    $("#predictionForm").on("submit", function(e) {
+        e.preventDefault();
+        var formData = $(this).serialize();
+        $("#result").html("<p>Loading...</p>");
+        $.ajax({
+            url: "/predict",
+            method: "POST",
+            data: formData,
+            success: function(response) {
+                var html = "<h3>Prediction: " + response.prediction + "</h3>";
+                html += "<p>Confidence: " + response.confidence + "</p>";
+                html += "<p>Model used: " + response.model + "</p>";
+                // Uncomment the following if BERT results are included:
+                // html += "<h4>BERT Prediction: " + response.bert_prediction + "</h4>";
+                // html += "<p>BERT Confidence: " + response.bert_confidence + "</p>";
+                $("#result").html(html);
+            },
+            error: function() {
+                $("#result").html("<p>Error during prediction. Please try again.</p>");
+            }
+        });
+    });
+</script>
+</body>
+</html>
