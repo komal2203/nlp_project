@@ -1,0 +1,6 @@
+Flask
+scikit-learn
+numpy
+tensorflow
+transformers
+regex
