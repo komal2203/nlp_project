@@ -1,11 +1,11 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, url_for
 import joblib
 import numpy as np
 import re
 import tensorflow as tf
 from transformers import BertTokenizerFast, TFBertForSequenceClassification
 
-app = Flask(__name__)
+app = Flask(__name__)  # Flask automatically serves from a /static folder
 
 #########################################
 # LOAD ALL MODELS
@@ -17,9 +17,12 @@ logistic_model = joblib.load('models/logictic_model.pkl')
 random_forest_model = joblib.load('models/RandomForest_model.pkl')
 gradient_boosting_model = joblib.load('models/GradientBoosting_model.pkl')
 
-# BERT model: Note we're giving the directory instead of a file path.
+# BERT model
 bert_tokenizer = BertTokenizerFast.from_pretrained('models/bert_tokenizer')
-bert_model = TFBertForSequenceClassification.from_pretrained('models/bert_model', from_pt=False)
+bert_model = TFBertForSequenceClassification.from_pretrained(
+    'models/bert_model', 
+    from_pt=False
+)
 
 #########################################
 # TEXT PREPROCESSING
