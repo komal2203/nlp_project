@@ -1,6 +1,7 @@
 Flask
 scikit-learn
 numpy
-tensorflow
+tensorflow 
+tf-keras
 transformers
-regex
+regex 
